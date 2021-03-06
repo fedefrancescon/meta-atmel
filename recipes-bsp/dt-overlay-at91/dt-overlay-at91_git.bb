@@ -54,16 +54,19 @@ addtask install after do_compile
 
 do_install () {
     # Copy files to /boot
-    if [ -e ${AT91BOOTSTRAP_MACHINE} ]; then
-        install -d ${D}/boot
-        install ${AT91BOOTSTRAP_MACHINE}/${AT91BOOTSTRAP_MACHINE}*.dtbo ${D}/boot
-    fi;
+    #if [ -e ${AT91BOOTSTRAP_MACHINE} ]; then
+    #    install -d ${D}/boot
+    #    install ${AT91BOOTSTRAP_MACHINE}/${AT91BOOTSTRAP_MACHINE}*.dtbo ${D}/boot
+    #fi;
 
-    if [ -e ${AT91BOOTSTRAP_MACHINE}.itb ]; then
-        install -d ${D}/boot
-        install ${AT91BOOTSTRAP_MACHINE}.itb ${D}/boot/
-        install ${AT91BOOTSTRAP_MACHINE}.its ${D}/boot/
-    fi;
+    #if [ -e ${AT91BOOTSTRAP_MACHINE}.itb ]; then
+    #    install -d ${D}/boot
+    #    install ${AT91BOOTSTRAP_MACHINE}.itb ${D}/boot/
+    #    install ${AT91BOOTSTRAP_MACHINE}.its ${D}/boot/
+    #fi;
+
+    install -d ${D}/boot
+    echo "Kernel images not installed to save space" >> ${D}/boot/readme.txt
 }
 
 addtask deploy after do_install

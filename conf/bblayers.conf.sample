@@ -17,4 +17,5 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-atmel \
   ##OEROOT##/../meta-openembedded/meta-multimedia \
   ##OEROOT##/../meta-aws \
+  ##OEROOT##/../meta-lua \
   "

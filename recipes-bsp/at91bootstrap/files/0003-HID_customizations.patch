@@ -1,0 +1,12 @@
+diff -ruN a/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig b/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig
+--- a/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig	1970-01-01 01:00:00.000000000 +0100
++++ b/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig	2021-03-06 05:18:30.556144646 +0100
+@@ -0,0 +1,8 @@
++CONFIG_SAM9X60EK=y
++CONFIG_RAM_256MB=y
++CONFIG_NANDFLASH=y
++# CONFIG_PMECC_AUTO_DETECT is not set
++CONFIG_PMECC_CORRECT_BITS_8=y
++CONFIG_IMG_SIZE="0x000c0000"
++CONFIG_DEBUG=y
++CONFIG_THUMB=y

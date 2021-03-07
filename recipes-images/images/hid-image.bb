@@ -101,6 +101,6 @@ IMAGE_INSTALL_append = " \
 "
 
 
-# TODO:
-# TOOLCHAIN_TARGET_TASK += " wpa-supplicant-staticdev"
+# Add wpa supplicant static part to toolchain
+TOOLCHAIN_TARGET_TASK += " wpa-supplicant-staticdev"
 

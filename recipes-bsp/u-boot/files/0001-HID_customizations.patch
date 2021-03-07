@@ -1,7 +1,7 @@
 diff -ruN a/configs/sam9x60-hid_nandflash_defconfig b/configs/sam9x60-hid_nandflash_defconfig
 --- a/configs/sam9x60-hid_nandflash_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ b/configs/sam9x60-hid_nandflash_defconfig	2021-03-06 09:10:51.980917244 +0100
-@@ -0,0 +1,68 @@
++++ b/configs/sam9x60-hid_nandflash_defconfig	2021-03-07 07:40:25.471143667 +0100
+@@ -0,0 +1,74 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_AT91=y
 +CONFIG_SYS_TEXT_BASE=0x23f00000
@@ -39,7 +39,12 @@ diff -ruN a/configs/sam9x60-hid_nandflash_defconfig b/configs/sam9x60-hid_nandfl
 +CONFIG_DEFAULT_DEVICE_TREE="sam9x60ek"
 +CONFIG_ENV_IS_IN_NAND=y
 +CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++# Env offset (EVB: 0x140000, final HW: 0x00c0000)
++CONFIG_ENV_OFFSET=0x140000
++# Redunant env offset (EVB: 0x100000, final HW: 0xa0000)
 +CONFIG_ENV_OFFSET_REDUND=0x100000
++# Env sector size (EVB: 0x20000 ??, final HW: 0x20000)
++CONFIG_ENV_SECT_SIZE=0x20000
 +CONFIG_SYS_RELOC_GD_ENV_ADDR=y
 +CONFIG_DM=y
 +CONFIG_CLK=y
@@ -54,6 +59,7 @@ diff -ruN a/configs/sam9x60-hid_nandflash_defconfig b/configs/sam9x60-hid_nandfl
 +# CONFIG_DM_MMC=y
 +CONFIG_GENERIC_ATMEL_MCI=y
 +CONFIG_MTD=y
++# We can disable the following three on final HW, useful on EVB for network
 +# CONFIG_PHY_MICREL=y
 +# CONFIG_DM_ETH=y
 +CONFIG_MACB=y

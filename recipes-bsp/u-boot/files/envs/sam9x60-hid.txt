@@ -1,6 +1,6 @@
 bootcmd=run bootcmd_boot;
-bootargs=console=ttyS0,115200 mtdparts=atmel_nand:256k(bootstrap)ro,768k(uboot)ro,256k(env_redundant),256k(env),6656k(itb)ro,-(rootfs) rootfstype=ubifs ubi.mtd=11 root=ubi0:rootfs rw atmel.pm_modes=standby,ulp0
-bootcmd_boot=nand read 0x24000000 0x00180000 0x680000; bootm 0x24000000#kernel_dtb${at91_overlays_config}
+bootargs=console=ttyS0,115200 mtdparts=atmel_nand:256k(bootstrap)ro,768k(uboot)ro,256k(env_redundant),256k(env),256k(dtb),5M(kernel)ro,96M(rootfs),-(data) rootfstype=ubifs ubi.mtd=6 ubi.mtd=7 root=ubi0:rootfs rw atmel.pm_modes=standby,ulp0
+bootcmd_boot=nand read 0x24000000 0x001C0000 0x500000; nand read 0x23000000 0x0180000 0x40000; bootz 0x24000000 - 0x23000000
 bootdelay=1
 ethact=gmac0
 stderr=serial

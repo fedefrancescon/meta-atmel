@@ -1,14 +1,14 @@
 diff -ruN a/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig b/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig
 --- a/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ b/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig	2021-03-08 11:50:19.493041921 +0100
++++ b/board/sam9x60ek/sam9x60-hidnf_uboot_defconfig	2021-03-17 14:45:34.938713167 +0100
 @@ -0,0 +1,16 @@
 +# EVB is SAM9x60EK, final HW should be SAM9x60_DDR2_SIP
-+CONFIG_SAM9X60EK=y
-+# CONFIG_SAM9X60_DDR2_SIP_EB=y
++#CONFIG_SAM9X60EK=y
++CONFIG_SAM9X60_DDR2_SIP_EB=y
 +#
 +# RAM size (EVB: 256MB, final HW 128MB)
-+CONFIG_RAM_256MB=y
-+# CONFIG_RAM_128MB=y
++# CONFIG_RAM_256MB=y
++CONFIG_RAM_128MB=y
 +CONFIG_NANDFLASH=y
 +# CONFIG_PMECC_AUTO_DETECT is not set
 +CONFIG_PMECC_CORRECT_BITS_8=y

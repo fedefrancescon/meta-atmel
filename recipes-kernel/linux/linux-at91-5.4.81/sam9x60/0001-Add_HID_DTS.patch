@@ -1,0 +1,565 @@
+diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9x60-hid.dts
+--- a/arch/arm/boot/dts/at91-sam9x60-hid.dts	1970-01-01 01:00:00.000000000 +0100
++++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-03-17 14:32:52.996188412 +0100
+@@ -0,0 +1,548 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * at91-sam9x60-hid.dts - Device Tree file for SAM9X60 based HID board
++ *
++ * Author: <fede@evolware.org>
++ */
++/dts-v1/;
++#include "sam9x60.dtsi"
++#include <dt-bindings/input/input.h>
++
++/ {
++	model = "Higeco SAM9X60-HID";
++	compatible = "microchip,sam9x60ek", "microchip,sam9x60", "atmel,at91sam9";
++
++	aliases {
++		serial1 = &uart1;
++		serial2 = &uart2;
++		serial3 = &uart3;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	clocks {
++		slow_xtal {
++			clock-frequency = <32768>;
++		};
++
++		main_xtal {
++			clock-frequency = <24000000>;
++		};
++	};
++
++	regulators: regulators {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		vdd_1v8: fixed-regulator-vdd_1v8@0 {
++			compatible = "regulator-fixed";
++			regulator-name = "VDD_1V8";
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-always-on;
++			status = "okay";
++		};
++
++		vdd_1v5: fixed-regulator-vdd_1v5@1 {
++			compatible = "regulator-fixed";
++			regulator-name = "VDD_1V5";
++			regulator-min-microvolt = <1500000>;
++			regulator-max-microvolt = <1500000>;
++			regulator-always-on;
++			status = "okay";
++		};
++
++		vdd1_3v3: fixed-regulator-vdd1_3v3@2 {
++			compatible = "regulator-fixed";
++			regulator-name = "VDD1_3V3";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++			status = "okay";
++		};
++
++		vdd2_3v3: regulator-fixed-vdd2_3v3@3 {
++			compatible = "regulator-fixed";
++			regulator-name = "VDD2_3V3";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++			status = "okay";
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		status = "okay"; /* Conflict with pwm0. */
++
++		red {
++			label = "red";
++			gpios = <&pioB 11 GPIO_ACTIVE_HIGH>;
++		};
++
++		green {
++			label = "green";
++			gpios = <&pioB 12 GPIO_ACTIVE_HIGH>;
++		};
++
++		blue {
++			label = "blue";
++			gpios = <&pioB 13 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++		};
++
++		cloud {
++			label = "cloud";
++			gpios = <&pioC 5 GPIO_ACTIVE_HIGH>;
++		};
++
++		yellow {
++			label = "yellow";
++			gpios = <&pioC 4 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
++	wifi_pwrseq: wifi_pwrseq {
++		compatible = "mmc-pwrseq-wilc";
++		reset-gpios = <&pioB 25 GPIO_ACTIVE_HIGH>;
++		powerdown-gpios = <&pioC 0 GPIO_ACTIVE_HIGH>;
++		pinctrl-0 = <&pinctrl_wilc_pwrseq_default>;
++		pinctrl-names = "default";
++		status = "okay";
++	};
++};
++
++&adc {
++	status = "disabled";
++};
++
++&can0 {
++	status = "disabled";
++};
++
++&can1 {
++	status = "disabled";
++};
++
++&classd {
++	status = "disabled";
++};
++
++&dbgu {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_dbgu>;
++	status = "okay"; /* Conflict with can0. */
++};
++
++&ebi {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ebi_addr_nand &pinctrl_ebi_data_0_7>;
++	status = "okay";
++
++	nand_controller: nand-controller {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_nand_oe_we &pinctrl_nand_cs &pinctrl_nand_rb>;
++		status = "okay";
++
++		nand@3 {
++			reg = <0x3 0x0 0x800000>;
++			rb-gpios = <&pioD 5 GPIO_ACTIVE_HIGH>;
++			cs-gpios = <&pioD 4 GPIO_ACTIVE_HIGH>;
++			nand-bus-width = <8>;
++			nand-ecc-mode = "hw";
++			nand-ecc-strength = <8>;
++			nand-ecc-step-size = <512>;
++			nand-on-flash-bbt;
++			label = "atmel_nand";
++
++			partitions {
++				compatible = "fixed-partitions";
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				at91bootstrap@0 {
++					label = "bootstrap";
++					reg = <0x0 0x40000>;
++				};
++
++				uboot@40000 {
++					label = "uboot";
++					reg = <0x40000 0xc0000>;
++				};
++
++				ubootenvred@100000 {
++					label = "env_redundant";
++					reg = <0x100000 0x40000>;
++				};
++
++				ubootenv@140000 {
++					label = "env";
++					reg = <0x140000 0x40000>;
++				};
++
++				dtb@180000 {
++					label = "dtb";
++					reg = <0x180000 0x40000>;
++				};
++
++				kernel@1c0000 {
++					label = "kernel";
++					reg = <0x1c0000 0x500000>;
++				};
++
++				rootfs@6c0000 {
++					label = "rootfs";
++					reg = <0x6c0000 0x6000000>;
++				};
++
++				data@66c0000 {
++					label = "data";
++					reg = <0x66c0000 0x1940000>;
++				};
++			};
++		};
++	};
++};
++
++&flx0 {
++	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_USART>;
++	status = "okay";
++	// UART1 486 RX+TX+DE
++
++	uart1: serial@200 {
++		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
++		reg = <0x200 0x200>;
++		interrupts = <34 IRQ_TYPE_LEVEL_HIGH 7>;
++		clocks = <&pmc PMC_TYPE_PERIPHERAL 5>;
++		clock-names = "usart";
++		pinctrl-0 = <&pinctrl_flx0_default>;
++		pinctrl-names = "default";
++                linux,rs485-enabled-at-boot-time;
++                rs485-rts-delay = <0 20>;
++		status = "okay";
++	};
++
++};
++
++&flx1 {
++	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_USART>;
++	status = "okay";
++
++	uart2: serial@200 {
++		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
++		reg = <0x200 0x200>;
++		interrupts = <35 IRQ_TYPE_LEVEL_HIGH 7>;
++		clocks = <&pmc PMC_TYPE_PERIPHERAL 6>;
++		clock-names = "usart";
++		pinctrl-0 = <&pinctrl_flx1_default>;
++		pinctrl-names = "default";
++		status = "okay";
++	};
++
++};
++
++&flx2 {
++	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_USART>;
++	status = "okay";
++
++	uart3: serial@200 {
++		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
++		reg = <0x200 0x200>;
++		interrupts = <36 IRQ_TYPE_LEVEL_HIGH 7>;
++		clocks = <&pmc PMC_TYPE_PERIPHERAL 7>;
++		clock-names = "usart";
++		pinctrl-0 = <&pinctrl_flx2_default>;
++		pinctrl-names = "default";
++		status = "okay";
++	};
++
++};
++
++&flx3 {
++	status = "disabled";
++};
++
++&flx4 {
++	status = "disabled";
++};
++
++&flx5 {
++	status = "disabled";
++/*
++	uart1: serial@200 {
++		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
++		reg = <0x200 0x200>;
++		interrupts = <14 IRQ_TYPE_LEVEL_HIGH 7>;
++		dmas = <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(10))>,
++		       <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(11))>;
++		dma-names = "tx", "rx";
++		clocks = <&pmc PMC_TYPE_PERIPHERAL 14>;
++		clock-names = "usart";
++		pinctrl-0 = <&pinctrl_flx5_default>;
++		pinctrl-names = "default";
++		atmel,use-dma-rx;
++		atmel,use-dma-tx;
++		status = "okay";
++	};
++*/
++};
++
++&flx6 {
++	status = "disabled";
++};
++
++&gpbr {
++	status = "okay";
++};
++
++&i2s {
++	status = "disabled"; /* Conflict with QSPI. */
++};
++
++&macb0 {
++	status = "disabled";
++};
++
++&pinctrl {
++	atmel,mux-mask = <
++			 /*	A	B	C	*/
++			 0xFFFFFFFF 0xC0E0397F 0xEF00019D	/* pioA */
++			 0x03FFFFFF 0x02FC7E68 0x00780000	/* pioB */
++			 0xffffffff 0xF83FFFFF 0xB800F3FC	/* pioC */
++			 0x003FFFFF 0x003F8000 0x00000000	/* pioD */
++			 >;
++
++	dbgu {
++		pinctrl_dbgu: dbgu-0 {
++			atmel,pins = <AT91_PIOA 9 AT91_PERIPH_A AT91_PINCTRL_PULL_UP
++				      AT91_PIOA 10 AT91_PERIPH_A AT91_PINCTRL_NONE>;
++		};
++	};
++
++	nand {
++		pinctrl_nand_oe_we: nand-oe-we-0 {
++			atmel,pins =
++				<AT91_PIOD 0 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 1 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)>;
++		};
++
++		pinctrl_nand_rb: nand-rb-0 {
++			atmel,pins =
++				<AT91_PIOD 5 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP>;
++		};
++
++		pinctrl_nand_cs: nand-cs-0 {
++			atmel,pins =
++				<AT91_PIOD 4 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP>;
++		};
++	};
++
++	ebi {
++		pinctrl_ebi_data_0_7: ebi-data-lsb-0 {
++			atmel,pins =
++				<AT91_PIOD 6 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 7 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 8 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 9 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 10 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 11 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 12 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 13 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)>;
++		};
++
++		pinctrl_ebi_data_0_15: ebi-data-msb-0 {
++			atmel,pins =
++				<AT91_PIOD 6 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 7 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 8 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 9 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 10 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 11 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 12 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 13 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 14 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 15 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 16 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 17 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 18 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 19 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 20 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOD 21 AT91_PERIPH_A AT91_PINCTRL_NONE>;
++		};
++
++		pinctrl_ebi_addr_nand: ebi-addr-0 {
++			atmel,pins =
++				<AT91_PIOD 2 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)
++				 AT91_PIOD 3 AT91_PERIPH_A (AT91_PINCTRL_NONE | AT91_PINCTRL_SLEWRATE_DIS)>;
++		};
++	};
++
++	flexcom {
++		pinctrl_flx0_default: flx0_uart {
++			atmel,pins =
++				<AT91_PIOA 0 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOA 1 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOA 2 AT91_PERIPH_A AT91_PINCTRL_NONE>;
++				 // AT91_PIOA 3 AT91_PERIPH_A AT91_PINCTRL_NONE // Not sure it is needed
++		};
++
++		pinctrl_flx1_default: flx1_uart {
++			atmel,pins =
++				<AT91_PIOA 5 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOA 6 AT91_PERIPH_A AT91_PINCTRL_NONE>;
++		};
++
++		pinctrl_flx2_default: flx2_uart {
++			atmel,pins =
++				<AT91_PIOA 7 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOA 8 AT91_PERIPH_A AT91_PINCTRL_NONE>;
++		};
++	};
++
++	hid_gpio {
++		pinctrl_hid_gpio_default: pinctrl_hid_gpio {
++			atmel,pins =
++				<AT91_PIOB 6 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN        // DI1-S
++				 AT91_PIOB 16 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN       // DI2-S
++				 AT91_PIOC 4 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // LED_YELLOW_DATA
++				 AT91_PIOC 5 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // LED_BLUE_CLOUD
++				 AT91_PIOC 8 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // DO1-S
++				 AT91_PIOC 9 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // MODEM_POWER_EN
++				 AT91_PIOC 10 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT       // MODEM_ON_OFF_CMD
++				 AT91_PIOC 11 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN       // MODEM_PWRMON
++				 AT91_PIOC 20 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT       // USB1_PWREN
++				 AT91_PIOC 24 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT>;     // USB2_PWREN
++		};
++	};
++
++
++	pwm0 {
++		pinctrl_pwm0_0: pwm0_0 {
++			atmel,pins = <AT91_PIOB 11 AT91_PERIPH_B AT91_PINCTRL_NONE>;
++		};
++
++		pinctrl_pwm0_1: pwm0_1 {
++			atmel,pins = <AT91_PIOB 12 AT91_PERIPH_B AT91_PINCTRL_NONE>;
++		};
++
++		pinctrl_pwm0_2: pwm0_2 {
++			atmel,pins = <AT91_PIOB 13 AT91_PERIPH_B AT91_PINCTRL_NONE>;
++		};
++	};
++
++	sdmmc0 {
++		pinctrl_sdmmc0_default: sdmmc0 {
++			atmel,pins =
++				<AT91_PIOA 17 AT91_PERIPH_A (AT91_PINCTRL_DRIVE_STRENGTH_HI)				/* PA17 CK  periph A with pullup */
++				 AT91_PIOA 16 AT91_PERIPH_A (AT91_PINCTRL_PULL_UP | AT91_PINCTRL_DRIVE_STRENGTH_HI)	/* PA16 CMD periph A with pullup */
++				 AT91_PIOA 15 AT91_PERIPH_A (AT91_PINCTRL_PULL_UP | AT91_PINCTRL_DRIVE_STRENGTH_HI)	/* PA15 DAT0 periph A */
++				 AT91_PIOA 18 AT91_PERIPH_A (AT91_PINCTRL_PULL_UP | AT91_PINCTRL_DRIVE_STRENGTH_HI)	/* PA18 DAT1 periph A with pullup */
++				 AT91_PIOA 19 AT91_PERIPH_A (AT91_PINCTRL_PULL_UP | AT91_PINCTRL_DRIVE_STRENGTH_HI)	/* PA19 DAT2 periph A with pullup */
++				 AT91_PIOA 20 AT91_PERIPH_A (AT91_PINCTRL_PULL_UP | AT91_PINCTRL_DRIVE_STRENGTH_HI)>;	/* PA20 DAT3 periph A with pullup */
++		};
++	};
++
++	usb0 {
++		pinctrl_usba_vbus: usba_vbus {
++			atmel,pins = <AT91_PIOB 18 AT91_PERIPH_GPIO AT91_PINCTRL_NONE>;
++		};
++	};
++
++	wilc_pwrseq {
++		pinctrl_wilc_pwrseq_default: pinctrl_wilc_pwrseq {
++			atmel,pins =
++				<AT91_PIOC 0 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN
++				 AT91_PIOB 25 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN>;
++		};
++	};
++
++}; /* pinctrl */
++
++&pwm0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm0_0 &pinctrl_pwm0_1 &pinctrl_pwm0_2>;
++	status = "disabled"; /* Conflict with leds. */
++};
++
++&sdmmc0 {
++	bus-width = <4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_sdmmc0_default>;
++
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay"; /* Conflict with flx4*/
++	mmc-pwrseq = <&wifi_pwrseq>;
++	wilc: wilc@1 {
++		compatible = "microchip,wilc1000", "microchip,wilc3000";
++		reg = <1>;
++		irq-gpios = <&pioA 28 0>;
++		bus-width = <4>;
++		status = "okay";
++	};
++};
++
++&sdmmc1 {
++	pinctrl-names = "disabled";
++};
++
++&qspi {
++	status = "disabled";
++};
++
++&rtt {
++	atmel,rtt-rtc-time-reg = <&gpbr 0x0>;
++	status = "okay";
++};
++
++&shutdown_controller {
++	atmel,shdwc-debouncer = <976>;
++	status = "okay";
++
++	input@0 {
++		reg = <0>;
++	};
++};
++
++&tcb0 {
++	timer0: timer@0 {
++		compatible = "atmel,tcb-timer";
++		reg = <0>;
++	};
++
++	timer1: timer@1 {
++		compatible = "atmel,tcb-timer";
++		reg = <1>;
++	};
++};
++
++&usb0 {
++	atmel,vbus-gpio = <&pioB 18 GPIO_ACTIVE_HIGH>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usba_vbus>;
++	status = "okay";
++};
++
++&usb1 {
++	num-ports = <3>;
++	atmel,vbus-gpio = <0
++			   &pioD 15 GPIO_ACTIVE_HIGH
++			   &pioD 16 GPIO_ACTIVE_HIGH>;
++	status = "okay";
++};
++
++&usb2 {
++	status = "okay";
++};
++
++&watchdog {
++	status = "okay";
++};
++
+diff -ruN a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+--- a/arch/arm/boot/dts/Makefile	2021-03-10 06:49:20.659576269 +0100
++++ b/arch/arm/boot/dts/Makefile	2021-03-13 05:29:42.222788055 +0100
+@@ -48,7 +48,8 @@
+ 	at91sam9x25ek.dtb \
+ 	at91sam9x35ek.dtb
+ dtb-$(CONFIG_SOC_SAM9X60) += \
+-	at91-sam9x60ek.dtb
++	at91-sam9x60ek.dtb \
++	at91-sam9x60-hid.dtb
+ dtb-$(CONFIG_SOC_SAM_V7) += \
+ 	at91-kizbox2-2.dtb \
+ 	at91-kizbox3-hs.dtb \

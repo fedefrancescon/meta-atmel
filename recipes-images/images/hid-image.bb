@@ -16,7 +16,6 @@ IMAGE_INSTALL_append = " \
 	mtd-utils \
 	mtd-utils-ubifs \
 	devmem2 \
-	mchp-wireless-firmware \
 	i2c-tools \
 	minicom \
 	ethtool \
@@ -95,11 +94,15 @@ IMAGE_INSTALL_append = " \
 	coreutils \
 	gd \
 	fswebcam \
+"
+
+# Keep separated HID hardware specific packages, so we can create x86-64 version as well
+IMAGE_INSTALL_append_sam9x60 = " \
+	mchp-wireless-firmware \
 	kernel-module-pwrseq-wilc \
 	kernel-module-wilc-sdio \
 	kernel-module-cfg80211 \
 "
-
 
 # Add wpa supplicant static part to toolchain
 TOOLCHAIN_TARGET_TASK += " wpa-supplicant-staticdev"

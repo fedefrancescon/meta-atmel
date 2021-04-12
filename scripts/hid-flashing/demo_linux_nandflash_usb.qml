@@ -68,7 +68,7 @@ SerialConnection {
 		var atBootFileName = "at91bootstrap-sam9x60ek.bin"
 		var ubootFileName = "u-boot-sam9x60ek-hid.bin"
 		var ubootEnvFileName = "u-boot.env"
-		var dtbFileName = "at91-sam9x60ek-sam9x60-hid.dtb""
+		var dtbFileName = "at91-sam9x60ek-sam9x60-hid.dtb"
 		var zImageFileName = "zImage-sam9x60-hid.bin"
 		var rootfsFileName = "hid-image-sam9x60-hid.ubi"
 

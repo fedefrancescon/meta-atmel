@@ -65,7 +65,8 @@ do_configure() {
 	# Copy board defconfig to .config if .config does not exist. This
 	# allows recipes to manage the .config themselves in
 	# do_configure_prepend().
-	if [ -f "${S}/board/${AT91BOOTSTRAP_MACHINE}/${AT91BOOTSTRAP_TARGET}" ] && [ ! -f "${B}/.config" ]; then
+
+	if [ -f "${S}/board/${AT91BOOTSTRAP_MACHINE}/${AT91BOOTSTRAP_TARGET}" ]; then
 		cp "${S}/board/${AT91BOOTSTRAP_MACHINE}/${AT91BOOTSTRAP_TARGET}" "${B}/.config"
 	fi
 

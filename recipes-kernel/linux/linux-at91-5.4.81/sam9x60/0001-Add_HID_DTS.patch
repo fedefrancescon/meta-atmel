@@ -1,7 +1,7 @@
 diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9x60-hid.dts
 --- a/arch/arm/boot/dts/at91-sam9x60-hid.dts	1970-01-01 01:00:00.000000000 +0100
-+++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-03-17 14:32:52.996188412 +0100
-@@ -0,0 +1,548 @@
++++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-04-18 05:56:44.832710159 +0200
+@@ -0,0 +1,575 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * at91-sam9x60-hid.dts - Device Tree file for SAM9X60 based HID board
@@ -219,13 +219,22 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +	uart1: serial@200 {
 +		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
 +		reg = <0x200 0x200>;
-+		interrupts = <34 IRQ_TYPE_LEVEL_HIGH 7>;
++		interrupts = <5 IRQ_TYPE_LEVEL_HIGH 7>;
 +		clocks = <&pmc PMC_TYPE_PERIPHERAL 5>;
 +		clock-names = "usart";
 +		pinctrl-0 = <&pinctrl_flx0_default>;
 +		pinctrl-names = "default";
 +                linux,rs485-enabled-at-boot-time;
 +                rs485-rts-delay = <0 20>;
++		dmas = <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(0))>,
++		       <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(1))>;
++		dma-names = "tx", "rx";
++		atmel,use-dma-rx;
++		atmel,use-dma-tx;
 +		status = "okay";
 +	};
 +
@@ -238,11 +247,20 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +	uart2: serial@200 {
 +		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
 +		reg = <0x200 0x200>;
-+		interrupts = <35 IRQ_TYPE_LEVEL_HIGH 7>;
++		interrupts = <6 IRQ_TYPE_LEVEL_HIGH 7>;
 +		clocks = <&pmc PMC_TYPE_PERIPHERAL 6>;
 +		clock-names = "usart";
 +		pinctrl-0 = <&pinctrl_flx1_default>;
 +		pinctrl-names = "default";
++		dmas = <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(2))>,
++		       <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(3))>;
++		dma-names = "tx", "rx";
++		atmel,use-dma-rx;
++		atmel,use-dma-tx;
 +		status = "okay";
 +	};
 +
@@ -255,11 +273,20 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +	uart3: serial@200 {
 +		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
 +		reg = <0x200 0x200>;
-+		interrupts = <36 IRQ_TYPE_LEVEL_HIGH 7>;
++		interrupts = <7 IRQ_TYPE_LEVEL_HIGH 7>;
 +		clocks = <&pmc PMC_TYPE_PERIPHERAL 7>;
 +		clock-names = "usart";
 +		pinctrl-0 = <&pinctrl_flx2_default>;
 +		pinctrl-names = "default";
++		dmas = <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(4))>,
++		       <&dma0
++			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
++			 AT91_XDMAC_DT_PERID(5))>;
++		dma-names = "tx", "rx";
++		atmel,use-dma-rx;
++		atmel,use-dma-tx;
 +		status = "okay";
 +	};
 +

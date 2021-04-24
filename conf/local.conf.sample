@@ -34,8 +34,8 @@
 #MACHINE ?= "mpc8315e-rdb"
 #MACHINE ?= "edgerouter"
 #
-# This sets the default machine to be qemux86-64 if no other machine is selected:
-MACHINE ??= "sama5d2-xplained"
+# This sets the default machine to be sam9x60-hid if no other machine is selected:
+MACHINE ??= "sam9x60-hid"
 
 #
 # Where to place downloads

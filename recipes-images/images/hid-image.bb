@@ -102,6 +102,9 @@ IMAGE_INSTALL_append_sam9x60 = " \
 	kernel-module-pwrseq-wilc \
 	kernel-module-wilc-sdio \
 	kernel-module-cfg80211 \
+	kernel-module-uvcvideo \
+	kernel-module-ftdi-sio \
+	kernel-module-pl2303 \
 "
 
 # Add wpa supplicant static part to toolchain

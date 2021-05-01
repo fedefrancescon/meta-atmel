@@ -18,4 +18,5 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-openembedded/meta-multimedia \
   ##OEROOT##/../meta-aws \
   ##OEROOT##/../meta-lua \
+  ##OEROOT##/../meta-gwc \
   "

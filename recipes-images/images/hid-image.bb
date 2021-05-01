@@ -94,6 +94,8 @@ IMAGE_INSTALL_append = " \
 	coreutils \
 	gd \
 	fswebcam \
+	cryptodev-linux \
+	cryptodev-module \
 "
 
 # Keep separated HID hardware specific packages, so we can create x86-64 version as well

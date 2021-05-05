@@ -107,6 +107,9 @@ IMAGE_INSTALL_append_sam9x60 = " \
 	kernel-module-uvcvideo \
 	kernel-module-ftdi-sio \
 	kernel-module-pl2303 \
+	kernel-module-asix \
+	kernel-module-ax88179-178a \
+	kernel-module-usbnet \
 "
 
 # Add wpa supplicant static part to toolchain

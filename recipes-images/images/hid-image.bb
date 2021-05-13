@@ -12,7 +12,6 @@ IMAGE_INSTALL_append = " \
 	gdbserver \
 	strace \
 	iproute2 \
-	canutils \
 	mtd-utils \
 	mtd-utils-ubifs \
 	devmem2 \
@@ -34,8 +33,6 @@ IMAGE_INSTALL_append = " \
 	luacjson \
 	luasys \
 	luasocket \
-	luasql \
-	luasnmp \
 	lualfs \
 	luaexpat \
 	curl \
@@ -82,7 +79,6 @@ IMAGE_INSTALL_append = " \
 	iproute2-tc \
 	iproute2-tipc \
 	libxml2-utils \
-	sqlite3 \
 	util-linux \
 	avahi-utils \
 	usb-modeswitch \

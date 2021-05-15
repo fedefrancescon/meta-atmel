@@ -9,8 +9,6 @@ EXTRA_IMAGE_FEATURES = " debug-tweaks ssh-server-openssh package-management "
 
 IMAGE_INSTALL_append = " \
 	binutils \
-	gdbserver \
-	strace \
 	iproute2 \
 	mtd-utils \
 	mtd-utils-ubifs \
@@ -56,7 +54,6 @@ IMAGE_INSTALL_append = " \
 	xz \
 	wget \
 	tar \
-	sysstat \
 	screen \
 	msmtp \
 	lsof \

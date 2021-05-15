@@ -106,6 +106,10 @@ IMAGE_INSTALL_append_sam9x60 = " \
 	kernel-module-asix \
 	kernel-module-ax88179-178a \
 	kernel-module-usbnet \
+	kernel-module-qmi-wwan \
+	kernel-module-sierra-net \
+	kernel-module-huawei-cdc-ncm \
+	kernel-module-cdc-ether \
 "
 
 # Add wpa supplicant static part to toolchain

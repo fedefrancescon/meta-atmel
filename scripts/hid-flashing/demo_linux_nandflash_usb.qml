@@ -58,6 +58,8 @@ SerialConnection {
 
 		applet.erase(offset, getEraseSize(size))
 		applet.write(offset, filename, bootfile)
+		// Uncomment below to enable verify (makes flashing longer of course)
+		// applet.verify(offset, filename, bootfile)
 	}
 
 	onConnectionOpened: {

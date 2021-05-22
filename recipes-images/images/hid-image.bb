@@ -8,7 +8,6 @@ EXTRA_IMAGE_FEATURES = " debug-tweaks ssh-server-openssh package-management "
 
 
 IMAGE_INSTALL_append = " \
-	binutils \
 	iproute2 \
 	mtd-utils \
 	mtd-utils-ubifs \

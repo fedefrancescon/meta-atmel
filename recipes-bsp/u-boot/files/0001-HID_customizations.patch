@@ -1,7 +1,7 @@
 diff -ruN a/configs/sam9x60-hid_nandflash_defconfig b/configs/sam9x60-hid_nandflash_defconfig
 --- a/configs/sam9x60-hid_nandflash_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ b/configs/sam9x60-hid_nandflash_defconfig	2021-03-08 13:17:45.533627201 +0100
-@@ -0,0 +1,71 @@
++++ b/configs/sam9x60-hid_nandflash_defconfig	2021-05-21 11:11:40.477044356 +0200
+@@ -0,0 +1,77 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_AT91=y
 +CONFIG_SYS_TEXT_BASE=0x23f00000
@@ -16,7 +16,7 @@ diff -ruN a/configs/sam9x60-hid_nandflash_defconfig b/configs/sam9x60-hid_nandfl
 +CONFIG_NAND_BOOT=y
 +CONFIG_BOOTDELAY=3
 +CONFIG_USE_BOOTARGS=y
-+CONFIG_BOOTARGS="console=ttyS0,115200 earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,768k(uboot)ro,256k(env_redundant),256k(env),256k(dtb),5M(kernel)ro,96M(rootfs),-(data) rootfstype=ubifs ubi.mtd=6 root=ubi0:rootfs rw"
++CONFIG_BOOTARGS="console=ttyS0,115200 earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,768k(uboot)ro,256k(env_redundant),256k(env),256k(dtb),5M(kernel)ro,89344k(rootfs),-(data) rootfstype=ubifs ubi.mtd=6 root=ubi0:rootfs rw"
 +CONFIG_SYS_CONSOLE_IS_IN_ENV=y
 +CONFIG_MISC_INIT_R=y
 +# CONFIG_DISPLAY_BOARDINFO is not set
@@ -73,3 +73,9 @@ diff -ruN a/configs/sam9x60-hid_nandflash_defconfig b/configs/sam9x60-hid_nandfl
 +# CONFIG_W1_EEPROM=y
 +# CONFIG_W1_EEPROM_DS24XXX=y
 +CONFIG_OF_LIBFDT_OVERLAY=y
++#CONFIG_CMD_MTDPARTS=y
++#CONFIG_MTDIDS_DEFAULT="nand0=atmel_nand"
++#CONFIG_MTDPARTS_DEFAULT="mtdparts=atmel_nand:256k(bootstrap)ro,768k(uboot)ro,256k(env_redundant),256k(env),256k(dtb),5M(kernel)ro,89344k(rootfs),-(data)"
++#CONFIG_MTD_UBI=y
++#CONFIG_UBIFS_FS=y
++

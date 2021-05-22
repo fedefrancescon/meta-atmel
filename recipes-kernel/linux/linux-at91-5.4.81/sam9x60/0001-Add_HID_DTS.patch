@@ -1,6 +1,6 @@
 diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9x60-hid.dts
 --- a/arch/arm/boot/dts/at91-sam9x60-hid.dts	1970-01-01 01:00:00.000000000 +0100
-+++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-04-18 05:56:44.832710159 +0200
++++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-05-21 11:06:30.504971710 +0200
 @@ -0,0 +1,575 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
@@ -199,12 +199,12 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +
 +				rootfs@6c0000 {
 +					label = "rootfs";
-+					reg = <0x6c0000 0x6000000>;
++					reg = <0x6c0000 0x5740000>;
 +				};
 +
-+				data@66c0000 {
++				data@5e00000 {
 +					label = "data";
-+					reg = <0x66c0000 0x1940000>;
++					reg = <0x5e00000 0x22000000>;
 +				};
 +			};
 +		};

@@ -1,7 +1,7 @@
 diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9x60-hid.dts
 --- a/arch/arm/boot/dts/at91-sam9x60-hid.dts	1970-01-01 01:00:00.000000000 +0100
-+++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-05-21 11:06:30.504971710 +0200
-@@ -0,0 +1,575 @@
++++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-06-29 04:43:11.020767535 +0200
+@@ -0,0 +1,581 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * at91-sam9x60-hid.dts - Device Tree file for SAM9X60 based HID board
@@ -20,6 +20,7 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +		serial1 = &uart1;
 +		serial2 = &uart2;
 +		serial3 = &uart3;
++		i2c0 = &i2c0;
 +	};
 +
 +	chosen {
@@ -82,30 +83,30 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +		compatible = "gpio-leds";
 +		status = "okay"; /* Conflict with pwm0. */
 +
-+		red {
-+			label = "red";
-+			gpios = <&pioB 11 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		green {
-+			label = "green";
-+			gpios = <&pioB 12 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		blue {
-+			label = "blue";
++		white {
++			label = "white";
 +			gpios = <&pioB 13 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "heartbeat";
++			// linux,default-trigger = "heartbeat";
 +		};
 +
-+		cloud {
-+			label = "cloud";
++		blue_data {
++			label = "blue_data";
 +			gpios = <&pioC 5 GPIO_ACTIVE_HIGH>;
 +		};
 +
-+		yellow {
-+			label = "yellow";
++		yellow_data {
++			label = "yellow_data";
 +			gpios = <&pioC 4 GPIO_ACTIVE_HIGH>;
++		};
++
++		blue_cloud {
++			label = "blue_cloud";
++			gpios = <&pioC 15 GPIO_ACTIVE_HIGH>;
++		};
++
++		yellow_cloud {
++			label = "yellow_cloud";
++			gpios = <&pioC 12 GPIO_ACTIVE_HIGH>;
 +		};
 +	};
 +
@@ -224,8 +225,8 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +		clock-names = "usart";
 +		pinctrl-0 = <&pinctrl_flx0_default>;
 +		pinctrl-names = "default";
-+                linux,rs485-enabled-at-boot-time;
-+                rs485-rts-delay = <0 0>;
++		linux,rs485-enabled-at-boot-time;
++		rs485-rts-delay = <0 0>;
 +		dmas = <&dma0
 +			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
 +			 AT91_XDMAC_DT_PERID(0))>,
@@ -301,12 +302,18 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +};
 +
 +&flx5 {
-+	status = "disabled";
-+/*
-+	uart1: serial@200 {
-+		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
-+		reg = <0x200 0x200>;
++	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_TWI>;
++	status = "okay";
++
++	i2c0: i2c@600 {
++		compatible = "microchip,sam9x60-i2c";
++		reg = <0x600 0x200>;
 +		interrupts = <14 IRQ_TYPE_LEVEL_HIGH 7>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&pmc PMC_TYPE_PERIPHERAL 14>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_flx5_default>;
 +		dmas = <&dma0
 +			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
 +			 AT91_XDMAC_DT_PERID(10))>,
@@ -314,15 +321,14 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +			(AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) |
 +			 AT91_XDMAC_DT_PERID(11))>;
 +		dma-names = "tx", "rx";
-+		clocks = <&pmc PMC_TYPE_PERIPHERAL 14>;
-+		clock-names = "usart";
-+		pinctrl-0 = <&pinctrl_flx5_default>;
-+		pinctrl-names = "default";
 +		atmel,use-dma-rx;
 +		atmel,use-dma-tx;
++		atmel,fifo-size = <16>;
++		i2c-analog-filter;
++		i2c-digital-filter;
++		i2c-digital-filter-width-ns = <35>;
 +		status = "okay";
-+	};
-+*/
++        };
 +};
 +
 +&flx6 {
@@ -435,6 +441,12 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +				<AT91_PIOA 7 AT91_PERIPH_A AT91_PINCTRL_NONE
 +				 AT91_PIOA 8 AT91_PERIPH_A AT91_PINCTRL_NONE>;
 +		};
++
++		pinctrl_flx5_default: flx5_twi {
++			atmel,pins =
++				<AT91_PIOA 21 AT91_PERIPH_A AT91_PINCTRL_PULL_UP
++				 AT91_PIOA 22 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>;
++		};
 +	};
 +
 +	hid_gpio {
@@ -443,11 +455,13 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +				<AT91_PIOB 6 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN        // DI1-S
 +				 AT91_PIOB 16 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN       // DI2-S
 +				 AT91_PIOC 4 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // LED_YELLOW_DATA
-+				 AT91_PIOC 5 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // LED_BLUE_CLOUD
++				 AT91_PIOC 5 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // LED_BLUE_DATA
 +				 AT91_PIOC 8 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // DO1-S
 +				 AT91_PIOC 9 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT        // MODEM_POWER_EN
 +				 AT91_PIOC 10 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT       // MODEM_ON_OFF_CMD
 +				 AT91_PIOC 11 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_DOWN       // MODEM_PWRMON
++				 AT91_PIOC 12 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT       // LED_YELLOW_CLOUD
++				 AT91_PIOC 15 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT       // LED_BLUE_CLOUD
 +				 AT91_PIOC 20 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT       // USB1_PWREN
 +				 AT91_PIOC 24 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT>;     // USB2_PWREN
 +		};
@@ -455,14 +469,6 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +
 +
 +	pwm0 {
-+		pinctrl_pwm0_0: pwm0_0 {
-+			atmel,pins = <AT91_PIOB 11 AT91_PERIPH_B AT91_PINCTRL_NONE>;
-+		};
-+
-+		pinctrl_pwm0_1: pwm0_1 {
-+			atmel,pins = <AT91_PIOB 12 AT91_PERIPH_B AT91_PINCTRL_NONE>;
-+		};
-+
 +		pinctrl_pwm0_2: pwm0_2 {
 +			atmel,pins = <AT91_PIOB 13 AT91_PERIPH_B AT91_PINCTRL_NONE>;
 +		};
@@ -498,7 +504,7 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +
 +&pwm0 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm0_0 &pinctrl_pwm0_1 &pinctrl_pwm0_2>;
++	pinctrl-0 = <&pinctrl_pwm0_2>;
 +	status = "disabled"; /* Conflict with leds. */
 +};
 +
@@ -578,8 +584,8 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +};
 +
 diff -ruN a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
---- a/arch/arm/boot/dts/Makefile	2021-03-10 06:49:20.659576269 +0100
-+++ b/arch/arm/boot/dts/Makefile	2021-03-13 05:29:42.222788055 +0100
+--- a/arch/arm/boot/dts/Makefile	2021-06-29 03:47:39.179072578 +0200
++++ b/arch/arm/boot/dts/Makefile	2021-06-15 10:48:48.328392187 +0200
 @@ -48,7 +48,8 @@
  	at91sam9x25ek.dtb \
  	at91sam9x35ek.dtb

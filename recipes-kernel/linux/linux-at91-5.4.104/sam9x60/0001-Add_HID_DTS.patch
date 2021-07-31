@@ -1,7 +1,7 @@
 diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9x60-hid.dts
 --- a/arch/arm/boot/dts/at91-sam9x60-hid.dts	1970-01-01 01:00:00.000000000 +0100
-+++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-06-29 04:43:11.020767535 +0200
-@@ -0,0 +1,581 @@
++++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-07-31 11:05:03.322747188 +0200
+@@ -0,0 +1,587 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * at91-sam9x60-hid.dts - Device Tree file for SAM9X60 based HID board
@@ -312,6 +312,7 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +		#address-cells = <1>;
 +		#size-cells = <0>;
 +		clocks = <&pmc PMC_TYPE_PERIPHERAL 14>;
++		clock-frequency = <1000000>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&pinctrl_flx5_default>;
 +		dmas = <&dma0
@@ -328,6 +329,11 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +		i2c-digital-filter;
 +		i2c-digital-filter-width-ns = <35>;
 +		status = "okay";
++
++		atecc508a@60 {
++			compatible = "atmel,atecc508a";
++			reg = <0x60>;
++		};
 +        };
 +};
 +
@@ -444,8 +450,8 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +
 +		pinctrl_flx5_default: flx5_twi {
 +			atmel,pins =
-+				<AT91_PIOA 21 AT91_PERIPH_A AT91_PINCTRL_PULL_UP
-+				 AT91_PIOA 22 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>;
++				<AT91_PIOA 21 AT91_PERIPH_B AT91_PINCTRL_PULL_UP
++				 AT91_PIOA 22 AT91_PERIPH_B AT91_PINCTRL_PULL_UP>;
 +		};
 +	};
 +

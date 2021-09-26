@@ -90,6 +90,9 @@ IMAGE_INSTALL_append = " \
 	cryptodev-module \
 "
 
+# To be added for ECC608 user space support:
+#	cryptoauthlib
+
 # Keep separated HID hardware specific packages, so we can create x86-64 version as well
 IMAGE_INSTALL_append_sam9x60 = " \
 	mchp-wireless-firmware \

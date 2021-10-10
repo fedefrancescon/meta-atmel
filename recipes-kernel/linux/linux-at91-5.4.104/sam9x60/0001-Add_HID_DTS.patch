@@ -1,7 +1,7 @@
 diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9x60-hid.dts
 --- a/arch/arm/boot/dts/at91-sam9x60-hid.dts	1970-01-01 01:00:00.000000000 +0100
-+++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-09-26 06:38:42.617237195 +0200
-@@ -0,0 +1,589 @@
++++ b/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-10-10 07:26:19.259390946 +0200
+@@ -0,0 +1,588 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * at91-sam9x60-hid.dts - Device Tree file for SAM9X60 based HID board
@@ -160,7 +160,6 @@ diff -ruN a/arch/arm/boot/dts/at91-sam9x60-hid.dts b/arch/arm/boot/dts/at91-sam9
 +			nand-ecc-mode = "hw";
 +			nand-ecc-strength = <8>;
 +			nand-ecc-step-size = <512>;
-+			nand-on-flash-bbt;
 +			label = "atmel_nand";
 +
 +			partitions {

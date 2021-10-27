@@ -1,0 +1,57 @@
+diff --git a/drivers/staging/wilc1000/debugfs.h b/drivers/staging/wilc1000/debugfs.h
+index 2de82a19489b..d1de0aa47b18 100644
+--- a/drivers/staging/wilc1000/debugfs.h
++++ b/drivers/staging/wilc1000/debugfs.h
+@@ -29,16 +29,18 @@
+ extern atomic_t WILC_DEBUG_REGION;
+
+ #define PRINT_D(netdev, region, format, ...) do { \
+-	if (atomic_read(&WILC_DEBUG_REGION)&(region))\
+-		netdev_dbg(netdev, "DBG [%s: %d] "format, __func__, __LINE__,\
+-		   ##__VA_ARGS__); } \
+-	while (0)
++	} while (0)
++	// if (atomic_read(&WILC_DEBUG_REGION)&(region))\
++	// netdev_dbg(netdev, "DBG [%s: %d] "format, __func__, __LINE__,\
++	// ##__VA_ARGS__); } \
++	//while (0)
+
+ #define PRINT_INFO(netdev, region, format, ...) do { \
+-	if (atomic_read(&WILC_DEBUG_REGION)&(region))\
+-		netdev_info(netdev, "INFO [%s]"format, __func__, \
+-		##__VA_ARGS__); } \
+-	while (0)
++	} while (0)
++	// if (atomic_read(&WILC_DEBUG_REGION)&(region))\
++	// netdev_info(netdev, "INFO [%s]"format, __func__, \
++	// ##__VA_ARGS__); } \
++	// while (0)
+
+ #define PRINT_WRN(netdev, region, format, ...) do { \
+ 	if (atomic_read(&WILC_DEBUG_REGION)&(region))\
+diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
+index ea0215a0f4a4..f057e72cbbeb 100644
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -1035,8 +1035,8 @@ static int atmel_prepare_tx_dma(struct uart_port *port)
+ 	atmel_port->chan_tx = dma_request_slave_channel(mfd_dev, "tx");
+ 	if (atmel_port->chan_tx == NULL)
+ 		goto chan_err;
+-	dev_info(port->dev, "using %s for tx DMA transfers\n",
+-		dma_chan_name(atmel_port->chan_tx));
++		// dev_info(port->dev, "using %s for tx DMA transfers\n",
++		// dma_chan_name(atmel_port->chan_tx));
+
+ 	spin_lock_init(&atmel_port->lock_tx);
+ 	sg_init_table(&atmel_port->sg_tx, 1);
+@@ -1218,8 +1218,8 @@ static int atmel_prepare_rx_dma(struct uart_port *port)
+ 	atmel_port->chan_rx = dma_request_slave_channel(mfd_dev, "rx");
+ 	if (atmel_port->chan_rx == NULL)
+ 		goto chan_err;
+-	dev_info(port->dev, "using %s for rx DMA transfers\n",
+-		dma_chan_name(atmel_port->chan_rx));
++		// dev_info(port->dev, "using %s for rx DMA transfers\n",
++		// dma_chan_name(atmel_port->chan_rx));
+
+ 	spin_lock_init(&atmel_port->lock_rx);
+ 	sg_init_table(&atmel_port->sg_rx, 1);

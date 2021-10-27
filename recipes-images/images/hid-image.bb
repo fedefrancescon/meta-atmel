@@ -18,6 +18,7 @@ IMAGE_INSTALL_append = " \
 	dosfstools \
 	e2fsprogs \
 	usbutils \
+	u-boot-eng-fw-utils \
 	iw \
 	wpa-supplicant \
 	opkg \

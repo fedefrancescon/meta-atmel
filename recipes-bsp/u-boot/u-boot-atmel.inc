@@ -9,6 +9,9 @@ EXTRA_OEMAKE = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHA
 
 DEPENDS += "dtc-native bc-native"
 
+SRC_URI_append = " file://fw_env.config"
+RPROVIDES_${PN} += "u-boot-default-env"
+
 # Allow setting an additional version string that will be picked up by the
 # u-boot build system and appended to the u-boot version.  If the .scmversion
 # file already exists it will not be overwritten.

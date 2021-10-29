@@ -110,6 +110,7 @@ IMAGE_INSTALL_append_sam9x60 = " \
 	kernel-module-sierra-net \
 	kernel-module-huawei-cdc-ncm \
 	kernel-module-cdc-ether \
+	kernel-module-option \
 "
 
 # Add wpa supplicant static part to toolchain

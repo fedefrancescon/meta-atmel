@@ -20,7 +20,7 @@ KBRANCH = "linux-5.4-at91"
 KBRANCH_sama7g5ek-sd = "sama7g5_early"
 KBRANCH_sama7g5ek-emmc = "sama7g5_early"
 SRC_URI = "git://github.com/linux4sam/linux-at91.git;protocol=git;branch=${KBRANCH}"
-SRC_URI += "file://defconfig file://0001-Add_HID_DTS.patch"
+SRC_URI += "file://defconfig file://0001-Add_HID_DTS.patch file://0002-Disable_noisy_WILC1000.patch"
 SRC_URI_remove_sama7g5ek = "file://defconfig"
 
 python __anonymous () {

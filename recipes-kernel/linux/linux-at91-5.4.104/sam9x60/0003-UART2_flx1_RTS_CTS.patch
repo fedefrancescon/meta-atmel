@@ -1,0 +1,23 @@
+diff -ruN c/arch/arm/boot/dts/at91-sam9x60-hid.dts d/arch/arm/boot/dts/at91-sam9x60-hid.dts
+--- c/arch/arm/boot/dts/at91-sam9x60-hid.dts	2021-10-30 11:06:23.425036409 +0200
++++ d/arch/arm/boot/dts/at91-sam9x60-hid.dts	2022-08-25 17:43:18.711301742 +0200
+@@ -257,6 +257,8 @@
+ 		dma-names = "tx", "rx";
+ 		atmel,use-dma-rx;
+ 		atmel,use-dma-tx;
++		rts-gpios = <&pioC 27 GPIO_ACTIVE_LOW>;
++		cts-gpios = <&pioC 28 GPIO_ACTIVE_LOW>;
+ 		// atmel,fifo-size = <16>;
+ 		status = "okay";
+ 	};
+@@ -436,7 +438,9 @@
+ 		pinctrl_flx1_default: flx1_uart {
+ 			atmel,pins =
+ 				<AT91_PIOA 5 AT91_PERIPH_A AT91_PINCTRL_NONE
+-				 AT91_PIOA 6 AT91_PERIPH_A AT91_PINCTRL_NONE>;
++				 AT91_PIOA 6 AT91_PERIPH_A AT91_PINCTRL_NONE
++				 AT91_PIOC 27 AT91_PERIPH_C AT91_PINCTRL_NONE
++				 AT91_PIOC 28 AT91_PERIPH_C AT91_PINCTRL_NONE>;
+ 		};
+ 
+ 		pinctrl_flx2_default: flx2_uart {
